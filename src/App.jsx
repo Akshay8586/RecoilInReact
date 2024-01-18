@@ -1,31 +1,29 @@
-/* eslint-disable no-unused-vars */
-import { useState } from 'react'
 import './App.css'
-import { RecoilRoot, useRecoilValue } from 'recoil'
-import { jobsAtom, messagingAtom, networkAtom, notificationsAtom, totalNotificationSelector } from './atoms'
+import { RecoilRoot, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import { notifications, totalNotificationSelector } from './atoms'
+import { useEffect } from 'react'
+import axios from 'axios'
 
 function App() {
-  
   return <RecoilRoot>
-    <MainApp/>
+    <MainApp />
   </RecoilRoot>
 }
 
 function MainApp() {
-  const networkNotificationCount = useRecoilValue(networkAtom);
-  const jobsNotificationCount = useRecoilValue(jobsAtom);
-  const messagingkNotificationCount = useRecoilValue(messagingAtom);
-  const notificationCount = useRecoilValue(notificationsAtom);
-  const totalNotificationsCount = useRecoilValue(totalNotificationSelector);
+  const networkCount = useRecoilValue(notifications);
+  const totalNotificationCount = useRecoilValue(totalNotificationSelector);
 
   return (
     <>
       <button>Home</button>
-      <button>My Network ({networkNotificationCount>=100? "99+": networkNotificationCount})</button>
-      <button>Jobs ({jobsNotificationCount>=100? "99+": jobsNotificationCount})</button>
-      <button>Messaging ({messagingkNotificationCount>=100? "99+": messagingkNotificationCount})</button>
-      <button>Notifications ({notificationCount>=100? "99+": notificationCount})</button>
-      <button>Me ({totalNotificationsCount})</button>
+      
+      <button>My network ({networkCount.networks >= 100 ? "99+" : networkCount.networks})</button>
+      <button>Jobs {networkCount.jobs}</button>
+      <button>Messaging ({networkCount.messaging})</button>
+      <button>Notifications ({networkCount.notifications})</button>
+
+      <button>Me ({totalNotificationCount})</button>
     </>
   )
 }
